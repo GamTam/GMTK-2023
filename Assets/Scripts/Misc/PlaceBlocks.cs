@@ -1,3 +1,4 @@
+using System;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -15,14 +16,14 @@ public class PlaceBlocks : MonoBehaviour
 
     private void Awake()
     {
-        _blockCount = LevelInfo.BlockCount;
+        if (LevelInfo != null) _blockCount = LevelInfo.BlockCount;
+        else _blockCount = Int32.MaxValue;
     }
 
     public void PlaceOrRemoveBlock(Vector2 normalPos, PointerEventData.InputButton button)
     {
         Vector2 mousePos = new Vector2(normalPos.x * _gridSize.x, normalPos.y * _gridSize.y);
         mousePos = new Vector2(mousePos.x - (_gridSize.x / 2), mousePos.y - (_gridSize.y / 2));
-        Debug.Log(mousePos);
         
         if (button == PointerEventData.InputButton.Left)
         {

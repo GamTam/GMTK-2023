@@ -8,11 +8,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _charSpeed;
     [SerializeField] private bool _readingQueue;
     [SerializeField] private float _moveDelay = 0.5f;
+    [SerializeField] private Shake _shake;
 
     [Space]
     [SerializeField] [ReadOnly] private LevelInfoSO _levelInfo;
     [SerializeField] [ReadOnly] private int _currentQueuePos = 0;
     [SerializeField] [ReadOnly] private float _timeUntilNextMove = 0;
+
+    private SpriteRenderer _spr;
     private bool _moving;
     private Vector2 _dir;
     private Vector2 _prevMoveVector;
@@ -25,6 +28,7 @@ public class PlayerController : MonoBehaviour
         _input = FindObjectOfType<PlayerInput>();
         _move = _input.actions["Main/Move"];
         _levelInfo = FindObjectOfType<PlaceBlocks>().LevelInfo;
+        _spr = GetComponentInChildren<SpriteRenderer>();
     }
     
     private void LateUpdate()
@@ -59,9 +63,11 @@ public class PlayerController : MonoBehaviour
                     break;
                 case MoveDirections.Left:
                     _dir = Vector2.left;
+                    _spr.flipX = true;
                     break;
                 case MoveDirections.Right:
                     _dir = Vector2.right;
+                    _spr.flipX = false;
                     break;
             }
 
@@ -77,6 +83,9 @@ public class PlayerController : MonoBehaviour
 
         _moving = true;
         _dir = _move.ReadValue<Vector2>().normalized;
+
+        if (_dir.x > 0) _spr.flipX = false;
+        else if (_dir.x < 0) _spr.flipX = true;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -90,6 +99,9 @@ public class PlayerController : MonoBehaviour
             pos = new Vector2(Mathf.Round(pos.x), Mathf.Round(pos.y));
             transform.position = pos;
             _timeUntilNextMove = _moveDelay;
+            _shake.enabled = true;
+            _shake.maxShakeDuration = 0.25f;
+            _shake.multiplier = 0.25f;
         }
     }
 }
