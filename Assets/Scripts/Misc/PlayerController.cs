@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool _readingQueue;
     [SerializeField] private Shake _shake;
     [SerializeField] private float _moveDelay = 0.5f;
+    [SerializeField] private GameObject _confetti;
     
     [Space]
     [SerializeField] private float _charSpeed;
@@ -18,6 +21,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] [ReadOnly] private int _currentQueuePos = 0;
     [SerializeField] [ReadOnly] private float _timeUntilNextMove = 0;
     [SerializeField] [ReadOnly] private float _velocity = 0;
+    [SerializeField] [ReadOnly] private bool _canWin = false;
 
     private Vector2 _startingPos;
     private bool _flipXAtStart;
@@ -25,9 +29,11 @@ public class PlayerController : MonoBehaviour
     private bool _moving;
     private Vector2 _dir;
     private Vector2 _prevMoveVector;
+    private GameObject _confettiInstance;
 
     private PlayerInput _input;
     private InputAction _move;
+    private List<MoveDirections> _moveQueue = new List<MoveDirections>();
 
     private void Start()
     {
@@ -37,11 +43,20 @@ public class PlayerController : MonoBehaviour
         _levelInfo = FindObjectOfType<PlaceBlocks>().LevelInfo;
         _spr = GetComponentInChildren<SpriteRenderer>();
         _flipXAtStart = _spr.flipX;
+        if (_levelInfo != null) _moveQueue = _levelInfo.MoveQueue;
         Globals.MusicManager.Play("Puzzle");
     }
     
     private void LateUpdate()
     {
+        if (_canWin && !_moving && _timeUntilNextMove <= 0 && _currentQueuePos == _moveQueue.Count)
+        {
+            Globals.SoundManager.Play("win");
+            enabled = false;
+            _confettiInstance = Instantiate(_confetti);
+            return;
+        }
+        
         Vector2 pos = transform.position;
         _velocity += Time.deltaTime * _speedUpFactor;
         pos += _dir * ((Mathf.Min(_charSpeed, _velocity)) * Time.deltaTime);
@@ -49,6 +64,7 @@ public class PlayerController : MonoBehaviour
         
         if (_levelInfo == null)
         {
+            if (!_moving) _timeUntilNextMove -= Time.deltaTime;
             GetInput();
             _prevMoveVector = _move.ReadValue<Vector2>().normalized;
         }
@@ -126,10 +142,29 @@ public class PlayerController : MonoBehaviour
         _spr.flipX = _flipXAtStart;
         _readingQueue = false;
         _currentQueuePos = 0;
+        enabled = true;
+        _canWin = false;
+        if (_confettiInstance != null) Destroy(_confettiInstance);
     }
 
     public void StartMovement()
     {
         _readingQueue = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.CompareTag("Finish"))
+        {
+            _canWin = true;
+        }
+    }
+    
+    private void OnTriggerExit2D(Collider2D col)
+    {
+        if (col.gameObject.CompareTag("Finish"))
+        {
+            _canWin = false;
+        }
     }
 }

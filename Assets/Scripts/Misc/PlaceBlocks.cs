@@ -28,14 +28,14 @@ public class PlaceBlocks : MonoBehaviour
         if (LevelInfo != null) _blockCount = LevelInfo.BlockCount;
         else _blockCount = Int32.MaxValue;
 
-        _headerText.text = $"{LevelInfo.StageHeader}\n{LevelInfo.StageSubheader}\n00:00:00";
+        if (LevelInfo != null) _headerText.text = $"{LevelInfo.StageHeader}\n{LevelInfo.StageSubheader}\n00:00:00";
     }
 
     private void Update()
     {
         _timer += Time.deltaTime;
         TimeSpan time = TimeSpan.FromSeconds(_timer);
-        _headerText.text = $"{LevelInfo.StageHeader}\n{LevelInfo.StageSubheader}\n{time.ToString("hh':'mm':'ss")}";
+        if (LevelInfo != null) _headerText.text = $"{LevelInfo.StageHeader}\n{LevelInfo.StageSubheader}\n{time.ToString("hh':'mm':'ss")}";
         _blockText.text = $"x{_blockCount}";
     }
 
@@ -53,6 +53,11 @@ public class PlaceBlocks : MonoBehaviour
                 obj.transform.position = new Vector2(Mathf.Floor(mousePos.x), Mathf.Floor(mousePos.y));
                 _realBlocks.Add(obj);
                 _blockCount -= 1;
+
+                System.Random rand = new System.Random();
+                int soundIndex = rand.Next(3) + 1;
+
+                Globals.SoundManager.Play("place_" + soundIndex);
             }
         } 
         else if (button == PointerEventData.InputButton.Right)
@@ -66,6 +71,11 @@ public class PlaceBlocks : MonoBehaviour
                     _realBlocks.Remove(hit.collider.gameObject);
                     Destroy(hit.collider.gameObject);
                     _blockCount += 1;
+                    
+                    System.Random rand = new System.Random();
+                    int soundIndex = rand.Next(3) + 1;
+
+                    Globals.SoundManager.Play("take_" + soundIndex);
                 }
             }
         }
