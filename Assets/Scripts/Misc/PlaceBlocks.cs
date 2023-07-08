@@ -11,8 +11,11 @@ public class PlaceBlocks : MonoBehaviour
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
 
-            GameObject obj = Instantiate(_blockInstance);
-            obj.transform.position = new Vector2(Mathf.Floor(mousePos.x), Mathf.Floor(mousePos.y));
+            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, 0f);
+            if (!hit) {
+                GameObject obj = Instantiate(_blockInstance);
+                obj.transform.position = new Vector2(Mathf.Floor(mousePos.x), Mathf.Floor(mousePos.y));
+            }
         }
 
         if (Mouse.current.rightButton.wasPressedThisFrame)
