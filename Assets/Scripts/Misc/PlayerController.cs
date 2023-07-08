@@ -1,10 +1,17 @@
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float _charSpeed;
+    [SerializeField] private MoveQueueSO _moveQueue;
+    [SerializeField] private bool _readingQueue;
+    [SerializeField] private float _moveDelay = 0.5f;
 
+    [Space]
+    [SerializeField] [ReadOnly] private int _currentQueuePos = 0;
+    [SerializeField] [ReadOnly] private float _timeUntilNextMove = 0;
     private bool _moving;
     private Vector2 _dir;
     private Vector2 _prevMoveVector;
@@ -24,8 +31,40 @@ public class PlayerController : MonoBehaviour
         pos += _dir * (_charSpeed * Time.deltaTime);
         transform.position = pos;
         
-        GetInput();
-        _prevMoveVector = _move.ReadValue<Vector2>().normalized;
+        if (_moveQueue == null)
+        {
+            GetInput();
+            _prevMoveVector = _move.ReadValue<Vector2>().normalized;
+        }
+        else if (_readingQueue)
+        {
+            if (_moving) return;
+            if (_timeUntilNextMove > 0)
+            {
+                _timeUntilNextMove -= Time.deltaTime;
+                return;
+            }
+            if (_currentQueuePos >= _moveQueue.MoveQueue.Count) return;
+
+            _moving = true;
+            switch (_moveQueue.MoveQueue[_currentQueuePos])
+            {
+                case MoveDirections.Up:
+                    _dir = Vector2.up;
+                    break;
+                case MoveDirections.Down:
+                    _dir = Vector2.down;
+                    break;
+                case MoveDirections.Left:
+                    _dir = Vector2.left;
+                    break;
+                case MoveDirections.Right:
+                    _dir = Vector2.right;
+                    break;
+            }
+
+            _currentQueuePos += 1;
+        }
     }
 
     private void GetInput()
@@ -42,13 +81,13 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Wall"))
         {
-            Debug.Log("a");
             _dir = Vector2.zero;
             _moving = false;
             
             Vector2 pos = transform.position;
             pos = new Vector2(Mathf.Round(pos.x), Mathf.Round(pos.y));
             transform.position = pos;
+            _timeUntilNextMove = _moveDelay;
         }
     }
 }

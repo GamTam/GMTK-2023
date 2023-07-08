@@ -1156,6 +1156,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _charSpeed: 5
+  _moveQueue: {fileID: 11400000, guid: 15b05addebaecef4a820cbc65ac8eb7e, type: 2}
+  _readingQueue: 0
+  _moveDelay: 0.5
+  _currentQueuePos: 0
+  _timeUntilNextMove: 0
 --- !u!61 &1454929352
 BoxCollider2D:
   m_ObjectHideFlags: 0
