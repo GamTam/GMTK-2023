@@ -20,7 +20,6 @@ public class PlayerController : MonoBehaviour
     
     private void LateUpdate()
     {
-        Debug.Log(_dir);
         Vector2 pos = transform.position;
         pos += _dir * (_charSpeed * Time.deltaTime);
         transform.position = pos;
