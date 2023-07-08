@@ -1,15 +1,16 @@
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float _charSpeed;
-    [SerializeField] private MoveQueueSO _moveQueue;
     [SerializeField] private bool _readingQueue;
     [SerializeField] private float _moveDelay = 0.5f;
 
     [Space]
+    [SerializeField] [ReadOnly] private LevelInfoSO _levelInfo;
     [SerializeField] [ReadOnly] private int _currentQueuePos = 0;
     [SerializeField] [ReadOnly] private float _timeUntilNextMove = 0;
     private bool _moving;
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour
     {
         _input = FindObjectOfType<PlayerInput>();
         _move = _input.actions["Main/Move"];
+        _levelInfo = FindObjectOfType<PlaceBlocks>().LevelInfo;
     }
     
     private void LateUpdate()
@@ -31,7 +33,7 @@ public class PlayerController : MonoBehaviour
         pos += _dir * (_charSpeed * Time.deltaTime);
         transform.position = pos;
         
-        if (_moveQueue == null)
+        if (_levelInfo == null)
         {
             GetInput();
             _prevMoveVector = _move.ReadValue<Vector2>().normalized;
@@ -44,10 +46,10 @@ public class PlayerController : MonoBehaviour
                 _timeUntilNextMove -= Time.deltaTime;
                 return;
             }
-            if (_currentQueuePos >= _moveQueue.MoveQueue.Count) return;
+            if (_currentQueuePos >= _levelInfo.MoveQueue.Count) return;
 
             _moving = true;
-            switch (_moveQueue.MoveQueue[_currentQueuePos])
+            switch (_levelInfo.MoveQueue[_currentQueuePos])
             {
                 case MoveDirections.Up:
                     _dir = Vector2.up;

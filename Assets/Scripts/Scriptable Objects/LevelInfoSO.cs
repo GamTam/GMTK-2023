@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Move Queue", menuName = "GMTK 2023/Move Queue")]
-public class MoveQueueSO : ScriptableObject
+[CreateAssetMenu(fileName = "New Level Info", menuName = "GMTK 2023/Level Info")]
+public class LevelInfoSO : ScriptableObject
 {
+    public int BlockCount;
     public List<MoveDirections> MoveQueue;
 }
 
