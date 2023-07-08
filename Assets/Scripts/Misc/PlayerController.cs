@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] [ReadOnly] private float _timeUntilNextMove = 0;
     [SerializeField] [ReadOnly] private float _velocity = 0;
 
+    private Vector2 _startingPos;
+    private bool _flipXAtStart;
     private SpriteRenderer _spr;
     private bool _moving;
     private Vector2 _dir;
@@ -29,10 +31,13 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        _startingPos = transform.position;
         _input = FindObjectOfType<PlayerInput>();
         _move = _input.actions["Main/Move"];
         _levelInfo = FindObjectOfType<PlaceBlocks>().LevelInfo;
         _spr = GetComponentInChildren<SpriteRenderer>();
+        _flipXAtStart = _spr.flipX;
+        Globals.MusicManager.Play("Puzzle");
     }
     
     private void LateUpdate()
@@ -109,6 +114,22 @@ public class PlayerController : MonoBehaviour
             _shake.enabled = true;
             _shake.maxShakeDuration = 0.25f;
             _shake.multiplier = 0.25f * Mathf.Min(_velocity * 0.25f, _charSpeed);
+            Globals.SoundManager.Play("hit");
         }
+    }
+
+    public void ResetPosition()
+    {
+        transform.position = _startingPos;
+        _dir = Vector2.zero;
+        _moving = false;
+        _spr.flipX = _flipXAtStart;
+        _readingQueue = false;
+        _currentQueuePos = 0;
+    }
+
+    public void StartMovement()
+    {
+        _readingQueue = true;
     }
 }

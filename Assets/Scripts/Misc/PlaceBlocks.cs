@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using NaughtyAttributes;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -11,13 +13,30 @@ public class PlaceBlocks : MonoBehaviour
     [SerializeField] private GameObject _blockInstance;
     [SerializeField] private Camera _cam;
     [SerializeField] private Vector2 _gridSize;
+    
+    [Space]
+    [SerializeField] private TMP_Text _headerText;
+    [SerializeField] private TMP_Text _blockText;
 
     [Space] [SerializeField] [ReadOnly] private int _blockCount;
+    [SerializeField] [ReadOnly] private List<GameObject> _realBlocks;
+
+    private float _timer;
 
     private void Awake()
     {
         if (LevelInfo != null) _blockCount = LevelInfo.BlockCount;
         else _blockCount = Int32.MaxValue;
+
+        _headerText.text = $"{LevelInfo.StageHeader}\n{LevelInfo.StageSubheader}\n00:00:00";
+    }
+
+    private void Update()
+    {
+        _timer += Time.deltaTime;
+        TimeSpan time = TimeSpan.FromSeconds(_timer);
+        _headerText.text = $"{LevelInfo.StageHeader}\n{LevelInfo.StageSubheader}\n{time.ToString("hh':'mm':'ss")}";
+        _blockText.text = $"x{_blockCount}";
     }
 
     public void PlaceOrRemoveBlock(Vector2 normalPos, PointerEventData.InputButton button)
@@ -32,6 +51,7 @@ public class PlaceBlocks : MonoBehaviour
             {
                 GameObject obj = Instantiate(_blockInstance);
                 obj.transform.position = new Vector2(Mathf.Floor(mousePos.x), Mathf.Floor(mousePos.y));
+                _realBlocks.Add(obj);
                 _blockCount -= 1;
             }
         } 
@@ -41,12 +61,24 @@ public class PlaceBlocks : MonoBehaviour
                 Physics2D.Raycast(mousePos, Vector2.zero, 0f);
             if (hit)
             {
-                if (hit.collider.gameObject.CompareTag("Wall"))
+                if (_realBlocks.Contains(hit.collider.gameObject))
                 {
+                    _realBlocks.Remove(hit.collider.gameObject);
                     Destroy(hit.collider.gameObject);
                     _blockCount += 1;
                 }
             }
         }
+    }
+
+    public void KillAllBlocks()
+    {
+        foreach (GameObject obj in _realBlocks)
+        {
+            Destroy(obj);
+            _blockCount += 1;
+        }
+
+        _realBlocks = new List<GameObject>();
     }
 }

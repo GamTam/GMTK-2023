@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Level Info", menuName = "GMTK 2023/Level Info")]
 public class LevelInfoSO : ScriptableObject
 {
+    public string StageHeader;
+    public string StageSubheader;
     public int BlockCount;
     public List<MoveDirections> MoveQueue;
 }
