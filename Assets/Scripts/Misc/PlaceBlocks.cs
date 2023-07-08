@@ -14,6 +14,8 @@ public class PlaceBlocks : MonoBehaviour
     [SerializeField] private Camera _cam;
     [SerializeField] private GameObject _wall;
     [SerializeField] private GameObject _winSpot;
+    [SerializeField] private GameObject _arrowBlock;
+    [SerializeField] private GameObject _arrowContainer;
     
     [Space]
     [SerializeField] private TMP_Text _headerText;
@@ -22,6 +24,7 @@ public class PlaceBlocks : MonoBehaviour
     [Space] [SerializeField] [ReadOnly] private int _blockCount;
     [SerializeField] [ReadOnly] private List<GameObject> _realBlocks;
     [SerializeField] [ReadOnly] private List<GameObject> _levelBlocks;
+    [SerializeField] [ReadOnly] private List<GameObject> _arrowList;
     [SerializeField] [ReadOnly] private Vector2 _gridSize = new Vector2(18, 10);
 
     private float _timer;
@@ -60,6 +63,15 @@ public class PlaceBlocks : MonoBehaviour
                     }
                 }
             }
+        }
+
+        foreach (MoveDirections dir in LevelInfo.MoveQueue)
+        {
+            GameObject obj = Instantiate(_arrowBlock, _arrowContainer.transform);
+            ArrowImageController arrow = obj.GetComponent<ArrowImageController>();
+            arrow.UpdateSprite(dir);
+            _arrowList.Add(obj);
+            _player._arrows.Add(arrow);
         }
 
         Globals.MusicManager.Play("Puzzle");

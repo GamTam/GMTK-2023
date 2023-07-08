@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     private PlayerInput _input;
     private InputAction _move;
     private List<MoveDirections> _moveQueue = new List<MoveDirections>();
+    [HideInInspector] public List<ArrowImageController> _arrows = new List<ArrowImageController>();
 
     private void Awake()
     {
@@ -93,6 +94,7 @@ public class PlayerController : MonoBehaviour
                     break;
             }
 
+            _arrows[_currentQueuePos].StartFade(Color.gray);
             _velocity = 0;
             _currentQueuePos += 1;
         }
@@ -141,6 +143,10 @@ public class PlayerController : MonoBehaviour
         enabled = true;
         _canWin = false;
         if (_confettiInstance != null) Destroy(_confettiInstance);
+        foreach (ArrowImageController arrow in _arrows)
+        {
+            arrow.StartFade(Color.white);
+        }
     }
 
     public void SetStartPos(Vector2 pos, LevelInfoSO levelInfo)
