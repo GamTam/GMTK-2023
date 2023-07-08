@@ -9,6 +9,28 @@ public class LevelInfoSO : ScriptableObject
     public string StageSubheader;
     public int BlockCount;
     public List<MoveDirections> MoveQueue;
+    public TileData LevelGrid;
+    public bool FacingLeft;
+}
+
+[System.Serializable]
+public class TileData
+{
+    [System.Serializable]
+    public struct RowData
+    {
+        public TileTypes[] row;
+    }
+
+    public RowData[] rows = new RowData[10];
+}
+
+public enum TileTypes
+{
+    O,
+    W,
+    P,
+    E
 }
 
 public enum MoveDirections

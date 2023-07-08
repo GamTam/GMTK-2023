@@ -35,16 +35,12 @@ public class PlayerController : MonoBehaviour
     private InputAction _move;
     private List<MoveDirections> _moveQueue = new List<MoveDirections>();
 
-    private void Start()
+    private void Awake()
     {
         _startingPos = transform.position;
         _input = FindObjectOfType<PlayerInput>();
         _move = _input.actions["Main/Move"];
-        _levelInfo = FindObjectOfType<PlaceBlocks>().LevelInfo;
         _spr = GetComponentInChildren<SpriteRenderer>();
-        _flipXAtStart = _spr.flipX;
-        if (_levelInfo != null) _moveQueue = _levelInfo.MoveQueue;
-        Globals.MusicManager.Play("Puzzle");
     }
     
     private void LateUpdate()
@@ -145,6 +141,16 @@ public class PlayerController : MonoBehaviour
         enabled = true;
         _canWin = false;
         if (_confettiInstance != null) Destroy(_confettiInstance);
+    }
+
+    public void SetStartPos(Vector2 pos, LevelInfoSO levelInfo)
+    {
+        _startingPos = pos;
+        transform.position = pos;
+        _levelInfo = levelInfo;
+        _flipXAtStart = _levelInfo.FacingLeft;
+        _spr.flipX = _flipXAtStart;
+        _moveQueue = _levelInfo.MoveQueue;
     }
 
     public void StartMovement()
