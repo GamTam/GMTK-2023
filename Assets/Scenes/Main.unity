@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 229614174}
   m_Layer: 0
   m_Name: Square (7)
-  m_TagString: Wall
+  m_TagString: Static Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -469,7 +469,7 @@ GameObject:
   - component: {fileID: 912824026}
   m_Layer: 0
   m_Name: Square (4)
-  m_TagString: Wall
+  m_TagString: Static Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -580,7 +580,7 @@ GameObject:
   - component: {fileID: 978713634}
   m_Layer: 0
   m_Name: Square (9)
-  m_TagString: Wall
+  m_TagString: Static Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -738,7 +738,7 @@ GameObject:
   - component: {fileID: 1243126400}
   m_Layer: 0
   m_Name: Square (1)
-  m_TagString: Wall
+  m_TagString: Static Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -849,7 +849,7 @@ GameObject:
   - component: {fileID: 1275272764}
   m_Layer: 0
   m_Name: Square (10)
-  m_TagString: Wall
+  m_TagString: Static Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -960,7 +960,7 @@ GameObject:
   - component: {fileID: 1300469721}
   m_Layer: 0
   m_Name: Square (8)
-  m_TagString: Wall
+  m_TagString: Static Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1223,7 +1223,7 @@ GameObject:
   - component: {fileID: 1597413283}
   m_Layer: 0
   m_Name: Square (2)
-  m_TagString: Wall
+  m_TagString: Static Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1339,7 +1339,7 @@ GameObject:
   - component: {fileID: 1736052629}
   m_Layer: 0
   m_Name: Square (5)
-  m_TagString: Wall
+  m_TagString: Static Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1450,7 +1450,7 @@ GameObject:
   - component: {fileID: 1809378421}
   m_Layer: 0
   m_Name: Square (6)
-  m_TagString: Wall
+  m_TagString: Static Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1561,7 +1561,7 @@ GameObject:
   - component: {fileID: 1997235256}
   m_Layer: 0
   m_Name: Square (3)
-  m_TagString: Wall
+  m_TagString: Static Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1717,6 +1717,10 @@ PrefabInstance:
     - target: {fileID: 4055027714338172063, guid: 5c6bb06a22d8f2f4ea3fdac4ac023139, type: 3}
       propertyPath: m_Name
       value: Square
+      objectReference: {fileID: 0}
+    - target: {fileID: 4055027714338172063, guid: 5c6bb06a22d8f2f4ea3fdac4ac023139, type: 3}
+      propertyPath: m_TagString
+      value: Static Wall
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c6bb06a22d8f2f4ea3fdac4ac023139, type: 3}

@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Wall"))
+        if (other.gameObject.CompareTag("Wall") || other.gameObject.CompareTag("Static Wall"))
         {
             _dir = Vector2.zero;
             _moving = false;
