@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 
     private bool _moving;
     private Vector2 _dir;
+    private Vector2 _prevMoveVector;
 
     private PlayerInput _input;
     private InputAction _move;
@@ -19,11 +20,19 @@ public class PlayerController : MonoBehaviour
     
     private void LateUpdate()
     {
+        Debug.Log(_dir);
         Vector2 pos = transform.position;
         pos += _dir * (_charSpeed * Time.deltaTime);
         transform.position = pos;
         
+        GetInput();
+        _prevMoveVector = _move.ReadValue<Vector2>().normalized;
+    }
+
+    private void GetInput()
+    {
         if (_moving) return;
+        if (_prevMoveVector != Vector2.zero) return;
         if (_move.ReadValue<Vector2>() == Vector2.zero) return;
 
         _moving = true;
@@ -34,6 +43,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Wall"))
         {
+            Debug.Log("a");
             _dir = Vector2.zero;
             _moving = false;
             

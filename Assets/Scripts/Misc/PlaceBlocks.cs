@@ -10,7 +10,6 @@ public class PlaceBlocks : MonoBehaviour
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
-            Debug.Log(mousePos);
 
             GameObject obj = Instantiate(_blockInstance);
             obj.transform.position = new Vector2(Mathf.Floor(mousePos.x), Mathf.Floor(mousePos.y));

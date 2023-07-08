@@ -161,22 +161,6 @@ public static class Globals
             return ex.Message;
         }
     }
-
-    // public static void CreateAssetInFolder(UnityEngine.Object newAsset, string ParentFolder, string AssetName )
-    // {
-    //     string[] pathSegments = ParentFolder.Split( new char[] {'/'});
-    //     string accumulatedUnityFolder = "Assets";
-    //     string accumulatedSystemFolder = Application.dataPath + System.IO.Path.GetDirectoryName("Assets" );
-    //     foreach( string folder in pathSegments )
-    //     {
-    //         if (!System.IO.Directory.Exists( accumulatedSystemFolder + System.IO.Path.GetDirectoryName( accumulatedUnityFolder + "/" + folder )))
-    //             AssetDatabase.CreateFolder( accumulatedUnityFolder, folder );
-    //         accumulatedSystemFolder += "/"+folder;
-    //         accumulatedUnityFolder += "/"+folder;
-    //     }
-    //     
-    //     AssetDatabase.CreateAsset (newAsset, "Assets/"+ParentFolder+"/"+AssetName+".asset");
-    // }
     
     public static string ReplaceFirstOccurrence(string source, string find, string replace)
     {
