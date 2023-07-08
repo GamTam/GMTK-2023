@@ -9638,7 +9638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baa83821bb3bcd64fa23d57ad3f6b7d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelInfo: {fileID: 0}
+  LevelInfo: {fileID: 11400000, guid: 15b05addebaecef4a820cbc65ac8eb7e, type: 2}
   _blockInstance: {fileID: 4055027714338172063, guid: 5c6bb06a22d8f2f4ea3fdac4ac023139, type: 3}
   _cam: {fileID: 519420031}
   _gridSize: {x: 18, y: 10}
@@ -13207,13 +13207,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93479965db74f764c82dbdb04dedb0c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _charSpeed: 20
   _readingQueue: 0
-  _moveDelay: 0.5
   _shake: {fileID: 519420033}
+  _moveDelay: 0.5
+  _charSpeed: 15
+  _speedUpFactor: 30
   _levelInfo: {fileID: 0}
   _currentQueuePos: 0
   _timeUntilNextMove: 0
+  _velocity: 0
 --- !u!61 &1454929352
 BoxCollider2D:
   m_ObjectHideFlags: 0

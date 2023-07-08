@@ -5,15 +5,19 @@ using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float _charSpeed;
     [SerializeField] private bool _readingQueue;
-    [SerializeField] private float _moveDelay = 0.5f;
     [SerializeField] private Shake _shake;
+    [SerializeField] private float _moveDelay = 0.5f;
+    
+    [Space]
+    [SerializeField] private float _charSpeed;
+    [SerializeField] private float _speedUpFactor = 2;
 
     [Space]
     [SerializeField] [ReadOnly] private LevelInfoSO _levelInfo;
     [SerializeField] [ReadOnly] private int _currentQueuePos = 0;
     [SerializeField] [ReadOnly] private float _timeUntilNextMove = 0;
+    [SerializeField] [ReadOnly] private float _velocity = 0;
 
     private SpriteRenderer _spr;
     private bool _moving;
@@ -34,7 +38,8 @@ public class PlayerController : MonoBehaviour
     private void LateUpdate()
     {
         Vector2 pos = transform.position;
-        pos += _dir * (_charSpeed * Time.deltaTime);
+        _velocity += Time.deltaTime * _speedUpFactor;
+        pos += _dir * ((Mathf.Min(_charSpeed, _velocity)) * Time.deltaTime);
         transform.position = pos;
         
         if (_levelInfo == null)
@@ -71,6 +76,7 @@ public class PlayerController : MonoBehaviour
                     break;
             }
 
+            _velocity = 0;
             _currentQueuePos += 1;
         }
     }
@@ -86,6 +92,7 @@ public class PlayerController : MonoBehaviour
 
         if (_dir.x > 0) _spr.flipX = false;
         else if (_dir.x < 0) _spr.flipX = true;
+        _velocity = 0;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -101,7 +108,7 @@ public class PlayerController : MonoBehaviour
             _timeUntilNextMove = _moveDelay;
             _shake.enabled = true;
             _shake.maxShakeDuration = 0.25f;
-            _shake.multiplier = 0.25f;
+            _shake.multiplier = 0.25f * Mathf.Min(_velocity * 0.25f, _charSpeed);
         }
     }
 }
