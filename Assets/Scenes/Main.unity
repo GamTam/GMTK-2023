@@ -724,6 +724,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelInfo: {fileID: 11400000, guid: 15b05addebaecef4a820cbc65ac8eb7e, type: 2}
   _blockInstance: {fileID: 4055027714338172063, guid: 5c6bb06a22d8f2f4ea3fdac4ac023139, type: 3}
+  _cam: {fileID: 519420031}
   _blockCount: 0
 --- !u!1 &1243126397
 GameObject:

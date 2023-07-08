@@ -7,6 +7,7 @@ public class PlaceBlocks : MonoBehaviour
     public LevelInfoSO LevelInfo;
     
     [SerializeField] private GameObject _blockInstance;
+    [SerializeField] private Camera _cam;
 
     [Space] [SerializeField] [ReadOnly] private int _blockCount;
 
@@ -19,7 +20,7 @@ public class PlaceBlocks : MonoBehaviour
     {
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
+            Vector2 mousePos = _cam.ScreenToWorldPoint(Mouse.current.position.value);
 
             RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, 0f);
             if (!hit && _blockCount > 0) {
@@ -31,7 +32,7 @@ public class PlaceBlocks : MonoBehaviour
 
         if (Mouse.current.rightButton.wasPressedThisFrame)
         {
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Mouse.current.position.value), Vector2.zero, 0f);
+            RaycastHit2D hit = Physics2D.Raycast(_cam.ScreenToWorldPoint(Mouse.current.position.value), Vector2.zero, 0f);
             if (hit) {
                 if (hit.collider.gameObject.CompareTag("Wall"))
                 {
