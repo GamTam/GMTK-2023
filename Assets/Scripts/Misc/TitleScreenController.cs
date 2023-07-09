@@ -13,7 +13,6 @@ public class TitleScreenController : MonoBehaviour
 
     public void BeginLevelLoad()
     {
-        Instantiate(_fade);
-        _fade.GetComponent<LevelLoader>().LevelToLoad = "Main";
+         Instantiate(_fade).GetComponent<LevelLoader>().LevelToLoad = "Main";
     }
 }
