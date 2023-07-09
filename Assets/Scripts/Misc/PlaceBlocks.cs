@@ -113,7 +113,8 @@ public class PlaceBlocks : MonoBehaviour
     public void PlaceOrRemoveBlock(Vector2 normalPos, PointerEventData.InputButton button)
     {
         if (_ignoreInput) return;
-        
+        if (_player._readingQueue) return;
+
         Vector2 mousePos = new Vector2(normalPos.x * _gridSize.x, normalPos.y * _gridSize.y);
         mousePos = new Vector2(mousePos.x - (_gridSize.x / 2), mousePos.y - (_gridSize.y / 2));
         

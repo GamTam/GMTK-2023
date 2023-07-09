@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private bool _readingQueue;
+    [SerializeField] public bool _readingQueue;
     [SerializeField] private Shake _shake;
     [SerializeField] private float _moveDelay = 0.5f;
     [SerializeField] private GameObject _confetti;
