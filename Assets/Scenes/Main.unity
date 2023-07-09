@@ -1659,8 +1659,8 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1022232843}
         m_TargetAssemblyTypeName: PlaceBlocks, Assembly-CSharp
-        m_MethodName: KillAllBlocks
-        m_Mode: 6
+        m_MethodName: ResetLevel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

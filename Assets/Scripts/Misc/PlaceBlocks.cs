@@ -192,6 +192,37 @@ public class PlaceBlocks : MonoBehaviour
         }
     }
 
+    public void ResetLevel()
+    {
+        foreach (GameObject obj in _realBlocks)
+        {
+            Destroy(obj);
+        }
+
+        _blockCount = LevelInfo.BlockCount;
+        _realBlocks = new List<GameObject>();
+        for (int i = 0; i < LevelInfo.LevelGrid.rows.Length; i++)
+        {
+            for (int j = 0; j < LevelInfo.LevelGrid.rows[i].row.Length; j++)
+            {
+                GameObject obj = null;
+                switch (LevelInfo.LevelGrid.rows[i].row[j])
+                {
+                    case TileTypes.L:
+                        obj = Instantiate(_blockInstance);
+                        obj.transform.position = new Vector3(j - (_gridSize.x / 2), -(i - (_gridSize.y / 2)) - 1,
+                            obj.transform.position.z);
+                        _realBlocks.Add(obj);
+                        break;
+                }
+            }
+        }
+
+        Globals.SoundManager.Play("reset");
+        _timer = 0f;
+        _stageEndTimer = 0f;
+    }
+
     public void NextLevel()
     {
         KillAllBlocks(true);
