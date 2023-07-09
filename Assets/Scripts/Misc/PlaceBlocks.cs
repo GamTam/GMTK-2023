@@ -115,7 +115,7 @@ public class PlaceBlocks : MonoBehaviour
                 if (_realBlocks.Contains(hit.collider.gameObject))
                 {
                     _realBlocks.Remove(hit.collider.gameObject);
-                    Destroy(hit.collider.gameObject);
+                    hit.collider.gameObject.GetComponent<Animator>().Play("Close");
                     _blockCount += 1;
                     
                     System.Random rand = new System.Random();
@@ -131,7 +131,7 @@ public class PlaceBlocks : MonoBehaviour
     {
         foreach (GameObject obj in _realBlocks)
         {
-            Destroy(obj);
+            obj.GetComponent<Animator>().Play("Close");
             _blockCount += 1;
         }
 
