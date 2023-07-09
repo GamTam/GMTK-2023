@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72556ca0a8624ae4f8a0c755f814f95d, type: 3}
   m_Name: Level 6
   m_EditorClassIdentifier: 
-  StageHeader: Stage 5
+  StageHeader: Stage 6
   StageSubheader: Bear Hug
   FacingLeft: 1
-  BlockCount: 3
+  BlockCount: 2
   NextLevel: {fileID: 0}
   MoveQueue: 02000000000000000200000001000000
   LevelGrid:

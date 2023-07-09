@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Level 5
   m_EditorClassIdentifier: 
   StageHeader: Stage 5
-  StageSubheader: Bear Hug
+  StageSubheader: Over The Wall
   FacingLeft: 1
-  BlockCount: 3
+  BlockCount: 2
   NextLevel: {fileID: 11400000, guid: daf1ee34fbb9e894a986d0832a6b2f42, type: 2}
   MoveQueue: 02000000000000000200000001000000
   LevelGrid:
