@@ -54,7 +54,7 @@ public class SoundManager : MonoBehaviour
                 
                 sound.name = entry.Key;
 
-                String path = "Assets/Sound/" + sound.name + ".wav";
+                String path = "Assets/Sound/" + sound.name + ".mp3";
                 
                 AudioClip clipHandler = Addressables.LoadAssetAsync<AudioClip>(path).WaitForCompletion();
 

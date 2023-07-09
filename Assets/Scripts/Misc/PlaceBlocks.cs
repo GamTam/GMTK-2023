@@ -132,6 +132,20 @@ public class PlaceBlocks : MonoBehaviour
 
                 Globals.SoundManager.Play("place_" + soundIndex);
             }
+            else if (hit)
+            {
+                if (hit.collider.gameObject.CompareTag("Wall"))
+                {
+                    if (_realBlocks.Contains(hit.collider.gameObject)) _realBlocks.Remove(hit.collider.gameObject);
+                    hit.collider.gameObject.GetComponent<Animator>().Play("Close");
+                    _blockCount += 1;
+                    
+                    System.Random rand = new System.Random();
+                    int soundIndex = rand.Next(3) + 1;
+
+                    Globals.SoundManager.Play("take_" + soundIndex);
+                }
+            }
         } 
         else if (button == PointerEventData.InputButton.Right)
         {
