@@ -32,7 +32,8 @@ public enum TileTypes
     O,
     W,
     P,
-    E
+    E,
+    L
 }
 
 public enum MoveDirections

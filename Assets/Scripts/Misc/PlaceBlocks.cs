@@ -61,6 +61,11 @@ public class PlaceBlocks : MonoBehaviour
                             obj.transform.position = new Vector3(j - (_gridSize.x / 2), -(i - (_gridSize.y / 2)) - 1, obj.transform.position.z);
                             _levelBlocks.Add(obj);
                             break;
+                        case TileTypes.L:
+                            obj = Instantiate(_blockInstance);
+                            obj.transform.position = new Vector3(j - (_gridSize.x / 2), -(i - (_gridSize.y / 2)) - 1, obj.transform.position.z);
+                            _levelBlocks.Add(obj);
+                            break;
                         case TileTypes.P:
                             _player.SetStartPos(new Vector2(j - (_gridSize.x / 2), -(i - (_gridSize.y / 2)) - 1), LevelInfo);
                             break;
@@ -125,9 +130,9 @@ public class PlaceBlocks : MonoBehaviour
                 Physics2D.Raycast(mousePos, Vector2.zero, 0f);
             if (hit)
             {
-                if (_realBlocks.Contains(hit.collider.gameObject))
+                if (hit.collider.gameObject.CompareTag("Wall"))
                 {
-                    _realBlocks.Remove(hit.collider.gameObject);
+                    if (_realBlocks.Contains(hit.collider.gameObject)) _realBlocks.Remove(hit.collider.gameObject);
                     hit.collider.gameObject.GetComponent<Animator>().Play("Close");
                     _blockCount += 1;
                     
@@ -146,7 +151,23 @@ public class PlaceBlocks : MonoBehaviour
         {
             if (!restartTimer) obj.GetComponent<Animator>().Play("Close");
             else Destroy(obj);
-            _blockCount += 1;
+        }
+
+        _blockCount = LevelInfo.BlockCount;
+        for (int i = 0; i < LevelInfo.LevelGrid.rows.Length; i++)
+        {
+            for (int j = 0; j < LevelInfo.LevelGrid.rows[i].row.Length; j++)
+            {
+                GameObject obj = null;
+                switch (LevelInfo.LevelGrid.rows[i].row[j])
+                {
+                    case TileTypes.L:
+                        obj = Instantiate(_blockInstance);
+                        obj.transform.position = new Vector3(j - (_gridSize.x / 2), -(i - (_gridSize.y / 2)) - 1, obj.transform.position.z);
+                        _levelBlocks.Add(obj);
+                        break;
+                }
+            }
         }
 
         Globals.SoundManager.Play("reset");
@@ -173,7 +194,7 @@ public class PlaceBlocks : MonoBehaviour
 
             foreach (GameObject obj in _levelBlocks)
             {
-                Destroy(obj);
+                if (obj != null) Destroy(obj);
             }
 
             _levelBlocks = new List<GameObject>();
@@ -192,6 +213,11 @@ public class PlaceBlocks : MonoBehaviour
                             break;
                         case TileTypes.W:
                             obj = Instantiate(_wall);
+                            obj.transform.position = new Vector3(j - (_gridSize.x / 2), -(i - (_gridSize.y / 2)) - 1, obj.transform.position.z);
+                            _levelBlocks.Add(obj);
+                            break;
+                        case TileTypes.L:
+                            obj = Instantiate(_blockInstance);
                             obj.transform.position = new Vector3(j - (_gridSize.x / 2), -(i - (_gridSize.y / 2)) - 1, obj.transform.position.z);
                             _levelBlocks.Add(obj);
                             break;
