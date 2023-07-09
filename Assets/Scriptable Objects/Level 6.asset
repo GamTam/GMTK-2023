@@ -15,7 +15,7 @@ MonoBehaviour:
   StageHeader: Stage 5
   StageSubheader: Bear Hug
   FacingLeft: 1
-  BlockCount: 2
+  BlockCount: 3
   NextLevel: {fileID: 0}
   MoveQueue: 02000000000000000200000001000000
   LevelGrid:
