@@ -11,8 +11,8 @@ public class LevelInfoSO : ScriptableObject
     [Space]
     public int BlockCount;
     public LevelInfoSO NextLevel;
-    public List<MoveDirections> MoveQueue;
     public TileData LevelGrid;
+    public List<MoveDirections> MoveQueue;
 }
 
 [System.Serializable]
