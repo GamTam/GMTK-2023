@@ -16,7 +16,7 @@ MonoBehaviour:
   StageSubheader: Get Around
   FacingLeft: 1
   BlockCount: 2
-  NextLevel: {fileID: 0}
+  NextLevel: {fileID: 11400000, guid: dd471c3f83fd4f54fb841c36df720944, type: 2}
   MoveQueue: 0200000000000000030000000100000002000000
   LevelGrid:
     rows:
