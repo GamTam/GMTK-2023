@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72556ca0a8624ae4f8a0c755f814f95d, type: 3}
   m_Name: Level 7
   m_EditorClassIdentifier: 
-  StageHeader: Stage 5
+  StageHeader: Stage 7
   StageSubheader: Bear-er Hug
   FacingLeft: 1
   BlockCount: 3
