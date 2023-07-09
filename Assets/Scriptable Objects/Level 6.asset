@@ -16,7 +16,7 @@ MonoBehaviour:
   StageSubheader: Bear Hug
   FacingLeft: 1
   BlockCount: 2
-  NextLevel: {fileID: 0}
+  NextLevel: {fileID: 11400000, guid: 436010894b0cb0348891bea3b0faafb7, type: 2}
   MoveQueue: 02000000000000000200000001000000
   LevelGrid:
     rows:
