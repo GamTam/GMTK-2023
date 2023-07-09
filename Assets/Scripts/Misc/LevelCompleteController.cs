@@ -7,6 +7,7 @@ public class LevelCompleteController : MonoBehaviour
     [SerializeField] private TMP_Text[] _text;
     [SerializeField] private Image[] _images;
     [SerializeField] private GameObject _fade;
+    [SerializeField] private GameObject _sceneManager;
 
     public void ResetMenu()
     {
@@ -23,5 +24,10 @@ public class LevelCompleteController : MonoBehaviour
         _fade.transform.localScale = Vector3.zero;
         
         gameObject.SetActive(false);
+    }
+
+    public void GoToTitleScreen()
+    {
+        Instantiate(_sceneManager).GetComponent<LevelLoader>().LevelToLoad = "Title";
     }
 }

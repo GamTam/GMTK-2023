@@ -113,7 +113,8 @@ public class PlaceBlocks : MonoBehaviour
     public void PlaceOrRemoveBlock(Vector2 normalPos, PointerEventData.InputButton button)
     {
         if (_ignoreInput) return;
-        
+        if (_player._readingQueue) return;
+
         Vector2 mousePos = new Vector2(normalPos.x * _gridSize.x, normalPos.y * _gridSize.y);
         mousePos = new Vector2(mousePos.x - (_gridSize.x / 2), mousePos.y - (_gridSize.y / 2));
         
@@ -131,6 +132,20 @@ public class PlaceBlocks : MonoBehaviour
                 int soundIndex = rand.Next(3) + 1;
 
                 Globals.SoundManager.Play("place_" + soundIndex);
+            }
+            else if (hit)
+            {
+                if (hit.collider.gameObject.CompareTag("Wall"))
+                {
+                    if (_realBlocks.Contains(hit.collider.gameObject)) _realBlocks.Remove(hit.collider.gameObject);
+                    hit.collider.gameObject.GetComponent<Animator>().Play("Close");
+                    _blockCount += 1;
+                    
+                    System.Random rand = new System.Random();
+                    int soundIndex = rand.Next(3) + 1;
+
+                    Globals.SoundManager.Play("take_" + soundIndex);
+                }
             }
         } 
         else if (button == PointerEventData.InputButton.Right)

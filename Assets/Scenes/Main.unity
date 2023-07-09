@@ -9121,7 +9121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baa83821bb3bcd64fa23d57ad3f6b7d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelInfo: {fileID: 11400000, guid: 96901f5576e3dac4396b7bcd982c6b8a, type: 2}
+  LevelInfo: {fileID: 11400000, guid: 15b05addebaecef4a820cbc65ac8eb7e, type: 2}
   _blockInstance: {fileID: 4055027714338172063, guid: 5c6bb06a22d8f2f4ea3fdac4ac023139, type: 3}
   _cam: {fileID: 519420031}
   _wall: {fileID: 3034794059762110292, guid: 97251ee0f536552499671568b633d8af, type: 3}
@@ -10579,6 +10579,7 @@ MonoBehaviour:
   - {fileID: 1509139564}
   - {fileID: 144250232}
   _fade: {fileID: 2020856288}
+  _sceneManager: {fileID: 2191317526863308640, guid: 785606e362f527647bc8bd0a63d61843, type: 3}
 --- !u!1 &1136283757
 GameObject:
   m_ObjectHideFlags: 0
@@ -14020,10 +14021,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 906316591}
-        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
-        m_MethodName: Play
-        m_Mode: 5
+      - m_Target: {fileID: 1117504904}
+        m_TargetAssemblyTypeName: LevelCompleteController, Assembly-CSharp
+        m_MethodName: GoToTitleScreen
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -16476,8 +16477,8 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
