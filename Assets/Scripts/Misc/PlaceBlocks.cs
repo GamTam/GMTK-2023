@@ -32,6 +32,7 @@ public class PlaceBlocks : MonoBehaviour
 
     private float _timer;
     private PlayerController _player;
+    private bool _ignoreInput;
 
     private void Start()
     {
@@ -64,7 +65,7 @@ public class PlaceBlocks : MonoBehaviour
                         case TileTypes.L:
                             obj = Instantiate(_blockInstance);
                             obj.transform.position = new Vector3(j - (_gridSize.x / 2), -(i - (_gridSize.y / 2)) - 1, obj.transform.position.z);
-                            _levelBlocks.Add(obj);
+                            _realBlocks.Add(obj);
                             break;
                         case TileTypes.P:
                             _player.SetStartPos(new Vector2(j - (_gridSize.x / 2), -(i - (_gridSize.y / 2)) - 1), LevelInfo);
@@ -86,7 +87,7 @@ public class PlaceBlocks : MonoBehaviour
         Globals.MusicManager.Play("Puzzle");
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (_player.enabled) _timer += Time.deltaTime;
         else
@@ -101,10 +102,14 @@ public class PlaceBlocks : MonoBehaviour
         if (LevelInfo != null) _headerText.text = $"{LevelInfo.StageHeader}\n{LevelInfo.StageSubheader}";
         _timerText.text = time.ToString("hh':'mm':'ss");
         _blockText.text = $"x{_blockCount}";
+
+        _ignoreInput = false;
     }
 
     public void PlaceOrRemoveBlock(Vector2 normalPos, PointerEventData.InputButton button)
     {
+        if (_ignoreInput) return;
+        
         Vector2 mousePos = new Vector2(normalPos.x * _gridSize.x, normalPos.y * _gridSize.y);
         mousePos = new Vector2(mousePos.x - (_gridSize.x / 2), mousePos.y - (_gridSize.y / 2));
         
@@ -149,29 +154,33 @@ public class PlaceBlocks : MonoBehaviour
     {
         foreach (GameObject obj in _realBlocks)
         {
-            if (!restartTimer) obj.GetComponent<Animator>().Play("Close");
+            if (!restartTimer && obj != null) obj.GetComponent<Animator>().Play("Close");
             else Destroy(obj);
         }
 
         _blockCount = LevelInfo.BlockCount;
-        for (int i = 0; i < LevelInfo.LevelGrid.rows.Length; i++)
+        if (!restartTimer)
         {
-            for (int j = 0; j < LevelInfo.LevelGrid.rows[i].row.Length; j++)
+            _realBlocks = new List<GameObject>();
+            for (int i = 0; i < LevelInfo.LevelGrid.rows.Length; i++)
             {
-                GameObject obj = null;
-                switch (LevelInfo.LevelGrid.rows[i].row[j])
+                for (int j = 0; j < LevelInfo.LevelGrid.rows[i].row.Length; j++)
                 {
-                    case TileTypes.L:
-                        obj = Instantiate(_blockInstance);
-                        obj.transform.position = new Vector3(j - (_gridSize.x / 2), -(i - (_gridSize.y / 2)) - 1, obj.transform.position.z);
-                        _levelBlocks.Add(obj);
-                        break;
+                    GameObject obj = null;
+                    switch (LevelInfo.LevelGrid.rows[i].row[j])
+                    {
+                        case TileTypes.L:
+                            obj = Instantiate(_blockInstance);
+                            obj.transform.position = new Vector3(j - (_gridSize.x / 2), -(i - (_gridSize.y / 2)) - 1,
+                                obj.transform.position.z);
+                            _realBlocks.Add(obj);
+                            break;
+                    }
                 }
             }
         }
 
         Globals.SoundManager.Play("reset");
-        _realBlocks = new List<GameObject>();
         if (restartTimer)
         {
             _timer = 0f;
@@ -217,9 +226,10 @@ public class PlaceBlocks : MonoBehaviour
                             _levelBlocks.Add(obj);
                             break;
                         case TileTypes.L:
+                            Debug.Log("a");
                             obj = Instantiate(_blockInstance);
                             obj.transform.position = new Vector3(j - (_gridSize.x / 2), -(i - (_gridSize.y / 2)) - 1, obj.transform.position.z);
-                            _levelBlocks.Add(obj);
+                            _realBlocks.Add(obj);
                             break;
                         case TileTypes.P:
                             _player.SetStartPos(new Vector2(j - (_gridSize.x / 2), -(i - (_gridSize.y / 2)) - 1), LevelInfo);
@@ -244,5 +254,7 @@ public class PlaceBlocks : MonoBehaviour
             _arrowList.Add(obj);
             _player._arrows.Add(arrow);
         }
+
+        _ignoreInput = true;
     }
 }
