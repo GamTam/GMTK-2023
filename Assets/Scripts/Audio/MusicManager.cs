@@ -21,7 +21,7 @@ public class MusicManager : MonoBehaviour
 
     private string prevSongName = "";
 
-    void Start()
+    void Awake()
     {
         DoneLoading = false;
         DontDestroyOnLoad(gameObject);
@@ -33,20 +33,22 @@ public class MusicManager : MonoBehaviour
         }
 
         Globals.MusicManager = this;
+        LoadSongs();
     }
     
-    public IEnumerator LoadSongs() {
+    public void LoadSongs() {
         Dictionary<string, ArrayList> musicDict = new Dictionary<string, ArrayList>();
-        AsyncOperationHandle<TextAsset> tsvHandler = Addressables.LoadAssetAsync<TextAsset>("Assets/Audio/Music Data.tsv");
-        yield return tsvHandler;
+        TextAsset tsvHandler = Addressables.LoadAssetAsync<TextAsset>("Assets/Audio/Music Data.tsv").WaitForCompletion();
 
-        if (tsvHandler.Status == AsyncOperationStatus.Failed)
+        if (tsvHandler == null)
         {
-            DoneLoading = true;
-            yield break;
+            Debug.LogError("Failed to load music data");
+            return;
         }
         
-        musicDict = Globals.LoadTSV(tsvHandler.Result);
+        musicDict = Globals.LoadTSV(tsvHandler);
+
+        allMusic = new List<Music>();
 
         foreach(KeyValuePair<string, ArrayList> entry in musicDict) {
             if (entry.Key == "" || entry.Key[0] == '#' || (string) entry.Value[1] == "Intro Point") continue;
@@ -69,13 +71,12 @@ public class MusicManager : MonoBehaviour
             {
                 String path = "Assets/Music/" + music.fileName + ".wav";
 
-                AsyncOperationHandle<AudioClip> clipHandler = Addressables.LoadAssetAsync<AudioClip>(path);
-                yield return clipHandler;
+                AudioClip clipHandler = Addressables.LoadAssetAsync<AudioClip>(path).WaitForCompletion();
 
-                if (clipHandler.Status == AsyncOperationStatus.Succeeded)
+                if (clipHandler != null)
                 {
                     music.source = gameObject.AddComponent<AudioSource>();
-                    music.source.clip = clipHandler.Result;
+                    music.source.clip = clipHandler;
                     music.source.pitch = music.pitch;
                     music.source.loop = true;
                     music.source.outputAudioMixerGroup = group;

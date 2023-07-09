@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Wall
   - Static Wall
+  - Floor
   layers:
   - Default
   - TransparentFX

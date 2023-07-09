@@ -11,6 +11,8 @@ public static class Globals
 {
     public static MusicManager MusicManager;
     public static SoundManager SoundManager;
+    
+    public static bool ScreenShake = true;
 
     public static Dictionary<string, ArrayList> LoadTSV(TextAsset file) {
         
