@@ -10579,6 +10579,7 @@ MonoBehaviour:
   - {fileID: 1509139564}
   - {fileID: 144250232}
   _fade: {fileID: 2020856288}
+  _sceneManager: {fileID: 2191317526863308640, guid: 785606e362f527647bc8bd0a63d61843, type: 3}
 --- !u!1 &1136283757
 GameObject:
   m_ObjectHideFlags: 0
@@ -14020,10 +14021,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 906316591}
-        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
-        m_MethodName: Play
-        m_Mode: 5
+      - m_Target: {fileID: 1117504904}
+        m_TargetAssemblyTypeName: LevelCompleteController, Assembly-CSharp
+        m_MethodName: GoToTitleScreen
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
