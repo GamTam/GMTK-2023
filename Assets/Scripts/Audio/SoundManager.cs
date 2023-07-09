@@ -80,6 +80,11 @@ public class SoundManager : MonoBehaviour
         s.source.Stop();
     }
 
+    public void Play(string name)
+    { 
+        Play(name, 1f);
+    }
+
     public Sound Play (string name, float pitch = 1f)
     {
         Sound s = sounds.Find(x => x.name == name);

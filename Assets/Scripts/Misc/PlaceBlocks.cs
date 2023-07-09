@@ -16,9 +16,11 @@ public class PlaceBlocks : MonoBehaviour
     [SerializeField] private GameObject _winSpot;
     [SerializeField] private GameObject _arrowBlock;
     [SerializeField] private GameObject _arrowContainer;
+    [SerializeField] private GameObject _stageEnd;
     
     [Space]
     [SerializeField] private TMP_Text _headerText;
+    [SerializeField] private TMP_Text _timerText;
     [SerializeField] private TMP_Text _blockText;
 
     [Space] [SerializeField] [ReadOnly] private int _blockCount;
@@ -26,6 +28,7 @@ public class PlaceBlocks : MonoBehaviour
     [SerializeField] [ReadOnly] private List<GameObject> _levelBlocks;
     [SerializeField] [ReadOnly] private List<GameObject> _arrowList;
     [SerializeField] [ReadOnly] private Vector2 _gridSize = new Vector2(18, 10);
+    [SerializeField] [ReadOnly] private float _stageEndTimer = 0f;
 
     private float _timer;
     private PlayerController _player;
@@ -38,7 +41,8 @@ public class PlaceBlocks : MonoBehaviour
 
         if (LevelInfo != null)
         {
-            _headerText.text = $"{LevelInfo.StageHeader}\n{LevelInfo.StageSubheader}\n00:00:00";
+            _headerText.text = $"{LevelInfo.StageHeader}\n{LevelInfo.StageSubheader}";
+            _timerText.text = "00:00:00";
 
             for (int i = 0; i < LevelInfo.LevelGrid.rows.Length; i++)
             {
@@ -79,9 +83,18 @@ public class PlaceBlocks : MonoBehaviour
 
     private void Update()
     {
-        _timer += Time.deltaTime;
+        if (_player.enabled) _timer += Time.deltaTime;
+        else
+        {
+            _stageEndTimer += Time.deltaTime;
+            if (_stageEndTimer >= 1.25f)
+            {
+                _stageEnd.SetActive(true);
+            }
+        }
         TimeSpan time = TimeSpan.FromSeconds(_timer);
-        if (LevelInfo != null) _headerText.text = $"{LevelInfo.StageHeader}\n{LevelInfo.StageSubheader}\n{time.ToString("hh':'mm':'ss")}";
+        if (LevelInfo != null) _headerText.text = $"{LevelInfo.StageHeader}\n{LevelInfo.StageSubheader}";
+        _timerText.text = time.ToString("hh':'mm':'ss");
         _blockText.text = $"x{_blockCount}";
     }
 
@@ -127,15 +140,83 @@ public class PlaceBlocks : MonoBehaviour
         }
     }
 
-    public void KillAllBlocks()
+    public void KillAllBlocks(bool restartTimer)
     {
         foreach (GameObject obj in _realBlocks)
         {
-            obj.GetComponent<Animator>().Play("Close");
+            if (!restartTimer) obj.GetComponent<Animator>().Play("Close");
+            else Destroy(obj);
             _blockCount += 1;
         }
 
         Globals.SoundManager.Play("reset");
         _realBlocks = new List<GameObject>();
+        if (restartTimer)
+        {
+            _timer = 0f;
+            _stageEndTimer = 0f;
+        }
+    }
+
+    public void NextLevel()
+    {
+        KillAllBlocks(true);
+        
+        LevelInfo = LevelInfo.NextLevel;
+        if (LevelInfo != null) _blockCount = LevelInfo.BlockCount;
+        else _blockCount = Int32.MaxValue;
+
+        if (LevelInfo != null)
+        {
+            _headerText.text = $"{LevelInfo.StageHeader}\n{LevelInfo.StageSubheader}";
+            _timerText.text = "00:00:00";
+
+            foreach (GameObject obj in _levelBlocks)
+            {
+                Destroy(obj);
+            }
+
+            _levelBlocks = new List<GameObject>();
+            
+            for (int i = 0; i < LevelInfo.LevelGrid.rows.Length; i++)
+            {
+                for (int j = 0; j < LevelInfo.LevelGrid.rows[i].row.Length; j++)
+                {
+                    GameObject obj = null;
+                    switch (LevelInfo.LevelGrid.rows[i].row[j])
+                    {
+                        case TileTypes.E:
+                            obj = Instantiate(_winSpot);
+                            obj.transform.position = new Vector3(j - (_gridSize.x / 2), -(i - (_gridSize.y / 2)) - 1, obj.transform.position.z);
+                            _levelBlocks.Add(obj);
+                            break;
+                        case TileTypes.W:
+                            obj = Instantiate(_wall);
+                            obj.transform.position = new Vector3(j - (_gridSize.x / 2), -(i - (_gridSize.y / 2)) - 1, obj.transform.position.z);
+                            _levelBlocks.Add(obj);
+                            break;
+                        case TileTypes.P:
+                            _player.SetStartPos(new Vector2(j - (_gridSize.x / 2), -(i - (_gridSize.y / 2)) - 1), LevelInfo);
+                            break;
+                    }
+                }
+            }
+        }
+
+        foreach (ArrowImageController arrow in _player._arrows)
+        {
+            Destroy(arrow.gameObject);
+        }
+        
+        _player._arrows = new List<ArrowImageController>();
+        
+        foreach (MoveDirections dir in LevelInfo.MoveQueue)
+        {
+            GameObject obj = Instantiate(_arrowBlock, _arrowContainer.transform);
+            ArrowImageController arrow = obj.GetComponent<ArrowImageController>();
+            arrow.UpdateSprite(dir);
+            _arrowList.Add(obj);
+            _player._arrows.Add(arrow);
+        }
     }
 }

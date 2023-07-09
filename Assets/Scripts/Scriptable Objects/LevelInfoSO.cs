@@ -7,10 +7,12 @@ public class LevelInfoSO : ScriptableObject
 {
     public string StageHeader;
     public string StageSubheader;
+    public bool FacingLeft;
+    [Space]
     public int BlockCount;
+    public LevelInfoSO NextLevel;
     public List<MoveDirections> MoveQueue;
     public TileData LevelGrid;
-    public bool FacingLeft;
 }
 
 [System.Serializable]
