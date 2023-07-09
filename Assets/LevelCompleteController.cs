@@ -17,7 +17,7 @@ public class LevelCompleteController : MonoBehaviour
 
         foreach (Image img in _images)
         {
-            img.color = Color.clear;
+            img.color = new Color(1, 1, 1, 0);
         }
 
         _fade.transform.localScale = Vector3.zero;

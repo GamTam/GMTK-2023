@@ -17,6 +17,7 @@ public class PlaceBlocks : MonoBehaviour
     [SerializeField] private GameObject _arrowBlock;
     [SerializeField] private GameObject _arrowContainer;
     [SerializeField] private GameObject _stageEnd;
+    [SerializeField] private GameObject _nextStageButton;
     
     [Space]
     [SerializeField] private TMP_Text _headerText;
@@ -44,6 +45,9 @@ public class PlaceBlocks : MonoBehaviour
         {
             _headerText.text = $"{LevelInfo.StageHeader}\n{LevelInfo.StageSubheader}";
             _timerText.text = "00:00:00";
+            
+            if (LevelInfo.NextLevel == null) _nextStageButton.SetActive(false);
+            else _nextStageButton.SetActive(true);
 
             for (int i = 0; i < LevelInfo.LevelGrid.rows.Length; i++)
             {
@@ -237,6 +241,9 @@ public class PlaceBlocks : MonoBehaviour
                     }
                 }
             }
+            
+            if (LevelInfo.NextLevel == null) _nextStageButton.SetActive(false);
+            else _nextStageButton.SetActive(true);
         }
 
         foreach (ArrowImageController arrow in _player._arrows)
