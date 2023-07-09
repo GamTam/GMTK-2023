@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level 7
   m_EditorClassIdentifier: 
   StageHeader: Stage 5
-  StageSubheader: Bearer Hug
+  StageSubheader: Bear-er Hug
   FacingLeft: 1
   BlockCount: 3
   NextLevel: {fileID: 0}
